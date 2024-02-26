@@ -1,32 +1,37 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const express = require("express");
-const logger = require("morgan");
-const mongoose = require("mongoose");
-const createError = require("http-errors");
+const express = require('express');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+const createError = require('http-errors');
+const { StatusCodes } = require('http-status-codes');
 
-/* Db config */
+// Base de datos
 
-require("./config/db.config");
+require('./config/db.config');
 
-/* Config express middlewares */
+// Creamos la instancia de la app
 
 const app = express();
 
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+}));
+app.use(express.json());
+app.use(logger('dev'));
 
-app.use(logger("dev"));
-app.use(express.json()); // Para poder tener req.body en peticiones de tipo application/json
+// Rutas
 
-/* Routes */
-
-const routes = require("./config/routes.config");
-app.use(routes);
+const routes = require('./config/routes.config');
+app.use('/', routes);
 
 /* Handle errors */
 
 // Middleware para cuando no encuentra ruta
 app.use((req, res, next) => {
-  next(createError(304, "Route not found"));
+  next(createError(StatusCodes.NOT_FOUND, "Route not found"));
 });
 
 // Middleware genérico de errores
@@ -60,10 +65,9 @@ app.use((error, req, res, next) => {
   res.status(error.status).json(data);
 });
 
-/* Server listening */
+// Arranque del servidor
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`App started at port ${port}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`App started on port: ${PORT} 🚀`);
+})
