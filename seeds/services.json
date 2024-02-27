@@ -1,0 +1,24 @@
+{
+    "services": [
+      {
+        "name": "Communciation",
+        "completed": false
+      },
+      {
+        "name": "Planning",
+        "completed": false
+      },
+      {
+        "name": "Marketing",
+        "completed": false
+      },
+      {
+        "name": "Social Media",
+        "completed": false
+      },
+      {
+        "name": "Design",
+        "completed": false
+      }
+    ]
+  }

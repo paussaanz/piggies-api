@@ -1,0 +1,44 @@
+{
+    "tasks": [
+      {
+        "serviceId": "",
+        "name": "Communication - Task 1",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Communication - Task 2",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Communication - Task 3",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Communication - Task 4",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Planning - Task 1",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Planning - Task 2",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Planning - Task 3",
+        "completed": false
+      },
+      {
+        "serviceId": "",
+        "name": "Planning - Task 4",
+        "completed": false
+      }
+    ]
+  }

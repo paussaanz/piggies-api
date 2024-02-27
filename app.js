@@ -5,6 +5,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const {Server} = require('socket.io');
+const http = require('http');
 const createError = require('http-errors');
 const { StatusCodes } = require('http-status-codes');
 
@@ -15,6 +17,8 @@ require('./config/db.config');
 // Creamos la instancia de la app
 
 const app = express();
+const server = http.createServer(app);
+
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
@@ -65,9 +69,25 @@ app.use((error, req, res, next) => {
   res.status(error.status).json(data);
 });
 
+/*SOCKET IO*/
+const io = new Server(server, {
+  cors: {
+    origin:"*",
+    methods: ["GET", "POST"]
+  }
+})
+io.on('connection', (socket) => {
+  console.log('A user connected');
+  socket.on('message', (message) => {
+    io.emit('message', message); // Broadcasts the message to all users
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 // Arranque del servidor
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`App started on port: ${PORT} 🚀`);
-})
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
