@@ -5,7 +5,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-const {Server} = require('socket.io');
+const { Server } = require('socket.io');
 const http = require('http');
 const createError = require('http-errors');
 const { StatusCodes } = require('http-status-codes');
@@ -20,9 +20,10 @@ const app = express();
 const server = http.createServer(app);
 
 
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+  }));
 app.use(express.json());
 app.use(logger('dev'));
 
@@ -59,11 +60,11 @@ app.use((error, req, res, next) => {
   data.message = error.message;
   data.errors = error.errors
     ? Object.keys(error.errors).reduce((errors, key) => {
-        return {
-          ...errors,
-          [key]: error.errors[key].message || error.errors[key],
-        };
-      }, {})
+      return {
+        ...errors,
+        [key]: error.errors[key].message || error.errors[key],
+      };
+    }, {})
     : undefined;
 
   res.status(error.status).json(data);
@@ -72,16 +73,20 @@ app.use((error, req, res, next) => {
 /*SOCKET IO*/
 const io = new Server(server, {
   cors: {
-    origin:"*",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 })
 io.on('connection', (socket) => {
   console.log('A user connected');
-  socket.on('message', (message) => {
-    io.emit('message', message); // Broadcasts the message to all users
-  });
 
+  socket.on('join_room', (data) => {
+    socket.join(data);
+    console.log(`User with id: ${socket.id} joined the room`) // Broadcasts the message to all users
+  });
+  socket.on("send_message", (data) => {
+    socket.to(data.room).emit("receive_message", data)
+  })
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });

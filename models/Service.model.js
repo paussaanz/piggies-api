@@ -8,11 +8,8 @@ const serviceSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
       },
-      tasks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task',
-        required: true
-    }]
   });
   
   const Service = mongoose.model('Service', serviceSchema);
+  module.exports = Service;
+

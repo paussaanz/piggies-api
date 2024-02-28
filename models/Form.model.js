@@ -9,7 +9,6 @@ const formSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
     required: [true, 'Required field'],
     match: [EMAIL_REGEX, 'Add a valid email'],
     trim: true,
@@ -17,28 +16,27 @@ const formSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    unique: true,
     required: [true, 'Required field'],
     trim: true,
     minlength: [9, "invalid length"]
   },
   subject: {
     type: String,
-    unique: true,
     required: [true, 'Required field'],
     trim: true,
   },
   message: {
     type: String,
-    unique: true,
     required: [true, 'Required field'],
     trim: true,
   },
-  service: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Service',
-    required: true
-  }],
+  service: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Service',
+      required: true
+    }
+  ],
 });
 
 const Form = mongoose.model('Form', formSchema);

@@ -1,25 +1,30 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
+  formId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Form",
+  },
   serviceId: {
-      type: mongoose.Schema.Types.ObjectId,
-      unique: true,
-    },
-    name: {
-      type: String,
-      required: [true, 'Required field'],
-      lowercase: true,
-    },
-    status: {
-        type: Boolean,
-        required: [true, 'Required field'],
-        default: false
-    },
-      date: {
-        type: String,
-        lowercase: true,
-      },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Service",
+  },
+  name: {
+    type: String,
+    required: [true, "Required field"],
+    lowercase: true,
+  },
+  status: {
+    type: Boolean,
+    required: [true, "Required field"],
+    default: false,
+  },
+  date: {
+    type: Boolean,
+    lowercase: true,
+    default: false
+  },
 });
 
-const Task = mongoose.model('Task', taskSchema);
+const Task = mongoose.model("Task", taskSchema);
+module.exports = Task;
