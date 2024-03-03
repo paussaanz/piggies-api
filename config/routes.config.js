@@ -24,11 +24,18 @@ router.get(
 router.post("/register", upload.single("imageUrl"), usersController.create);
 
 // Form
-router.post("/form", formController.createForm);
-router.get("/form", formController.getForms);
+router.post("/forms", formController.createForm);
+router.post("/forms/:id/accept", formController.doAcceptForm);
+router.get("/forms/unaccepted", formController.unacceptedForms);
+router.get("/forms/accepted", formController.acceptedForms);
+router.get('/forms/:id/tasks', formController.acceptedFormsTasks)
+router.get("/forms", formController.getForms);
 
 // Tasks
 router.get("/tasks", tasksController.getAllTasks);
+router.get("/tasks/done", tasksController.getDoneTasks);
+router.get("/tasks/pending", tasksController.getPendingTasks);
+
 router.get("/tasks/form/:formId", tasksController.getTasksByForm);
 router.get("/tasks/service/:serviceId", tasksController.getTasksByService);
 

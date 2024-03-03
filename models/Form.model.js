@@ -37,6 +37,12 @@ const formSchema = new mongoose.Schema({
       required: true
     }
   ],
+  accepted:
+  {
+    type: Boolean,
+    required: true,
+    default: false
+  },
 });
 
 const Form = mongoose.model('Form', formSchema);
