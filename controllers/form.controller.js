@@ -67,24 +67,6 @@ module.exports.doAcceptForm = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.unacceptedForms = async (req, res) => {
-  try {
-    const forms = await Form.find({ accepted: false });
-    res.json(forms);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-
-module.exports.acceptedForms = async (req, res) => {
-  try {
-    const forms = await Form.find({ accepted: true });
-    res.json(forms);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-
 module.exports.acceptedFormsTasks = async (req, res) => {
   try {
     const form = await Form.findById(req.params.id);
@@ -101,9 +83,18 @@ module.exports.acceptedFormsTasks = async (req, res) => {
 
 
 module.exports.getForms = (req, res, next) => {
-  Form.find()
-    .populate("service")
+  const { accepted } = req.query
+  let searchQuery = {}
+
+  if (accepted) {
+    searchQuery.accepted = true
+  }
+
+  Form.find(searchQuery)
+  .populate('service')
+  .populate('tasks')
     .then(dbForms => {
+      console.log(dbForms)
       res.status(StatusCodes.OK).json(dbForms);
     })
     .catch(next)

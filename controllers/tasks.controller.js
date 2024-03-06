@@ -9,24 +9,6 @@ module.exports.getAllTasks = async (req, res, next) => {
     }
 };
 
-module.exports.getDoneTasks = async (req, res, next) => {
-    try {
-        const doneTasks = await Task.find({status:true}).populate("serviceId");
-        res.status(200).json(doneTasks);
-    } catch (error) {
-        next(error);
-    }
-};
-
-module.exports.getPendingTasks = async (req, res, next) => {
-    try {
-        const pendingTasks = await Task.find({status:false}).populate("serviceId");
-        res.status(200).json(pendingTasks);
-    } catch (error) {
-        next(error);
-    }
-};
-
 module.exports.getTasksByForm = async (req, res, next) => {
     try {
         const { formId } = req.params;
@@ -49,19 +31,18 @@ module.exports.getTasksByService = async (req, res, next) => {
     }
 };
 
-module.exports.updateTask = async (req, res, next) => {
+exports.updateTaskStatus = async (req, res) => {
+    const { taskId } = req.params;
+
     try {
-        const { taskId, status } = req.params;
-        const task = await Task.findByIdAndUpdate(
-            taskId,
-            { status },
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
-        res.status(200).json(task);
+      const task = await Task.findByIdAndUpdate(taskId, { $set: { status: true } }, { new: true });
+  
+      if (!task) {
+        return res.status(404).send({ message: 'Task not found' });
+      }
+  
+      res.status(200).json(task);
     } catch (error) {
-        next(error);
+      res.status(500).send({ message: error.message || 'Error updating task status' });
     }
-};
+  };

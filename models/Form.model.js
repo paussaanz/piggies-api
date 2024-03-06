@@ -42,8 +42,29 @@ const formSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
-  },
-});
+  }
+},
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        // Sirve para cambiar el output de los endpoints cuando hago res.json
+
+        delete ret.__v;
+        delete ret.password;
+      },
+    },
+  }
+);
+
+formSchema.virtual('tasks', {
+  foreignField: 'formId',
+  localField: '_id',
+  ref: 'Task',
+  justOne: false
+})
+
 
 const Form = mongoose.model('Form', formSchema);
 module.exports = Form

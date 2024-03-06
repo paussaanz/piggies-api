@@ -49,3 +49,11 @@ module.exports.getCurrentUser = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.getUsers = (req, res, next) => {
+  User.find()
+    .then((dbUsers) => {
+      res.status(StatusCodes.OK).json(dbUsers)
+    })
+    .catch(next);
+};
