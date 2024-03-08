@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema(
       type: String,
       unique: true,
       required: [true, 'Required field'],
-      trim: true 
+      trim: true
     },
     email: {
       type: String,
@@ -45,6 +45,12 @@ const userSchema = mongoose.Schema(
   }
 );
 
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  foreignField: 'userId',
+  localField: '_id',
+  justOne: false
+})
 
 userSchema.methods.checkPassword = function (passwordToCompare) {
   return bcrypt.compare(passwordToCompare, this.password);

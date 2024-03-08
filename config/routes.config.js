@@ -27,6 +27,8 @@ router.get("/tasks", tasksController.getAllTasks);
 router.post('/tasks/:taskId/status', tasksController.updateTaskStatus);
 router.get("/tasks/form/:formId", tasksController.getTasksByForm);
 router.get("/tasks/service/:serviceId", tasksController.getTasksByService);
+router.post('/addUserToTask/:userId/:taskId', tasksController.addUserToTask);
+router.post('/editTask/:taskId', tasksController.editTask);
 
 // Services
 router.get("/services", serviceController.getServices);

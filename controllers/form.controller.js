@@ -7,25 +7,6 @@ const {
   createEmailTemplate,
 } = require('../config/nodemailer.config');
 
-//CONTROLADOR SIN NODEMAILER
-// module.exports.createForm = (req, res, next) => {
-//     Form.create(req.body)
-//     .then((createdForm) => {
-//       const taskPromises = createdForm.service.map((service, index) => {
-//         return Task.create({
-//           name: `Task ${index + 1} from ${createdForm.name}`,
-//           formId: createdForm._id,
-//           serviceId: service,
-//         });
-//       });
-
-//       return Promise.all(taskPromises).then((createdTasks) => {
-//         res.status(StatusCodes.CREATED).json(createdTasks);
-//       });
-//     })
-//     .catch(next);
-// };
-
 module.exports.createForm = (req, res, next) => {
   Form.create(req.body)
     .then((createdForm) => {
@@ -91,10 +72,9 @@ module.exports.getForms = (req, res, next) => {
   }
 
   Form.find(searchQuery)
-  .populate('service')
-  .populate('tasks')
+    // .populate('service')
+    .populate('tasks')
     .then(dbForms => {
-      console.log(dbForms)
       res.status(StatusCodes.OK).json(dbForms);
     })
     .catch(next)
