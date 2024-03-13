@@ -7,6 +7,16 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const userSchema = mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: [true, 'Required field'],
+      trim: true
+    },
+    surname: {
+      type: String,
+      required: [true, 'Required field'],
+      trim: true
+    },
     username: {
       type: String,
       unique: true,
@@ -23,13 +33,17 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "required field"],
+      required: [true, 'Required field'],
       minlength: [8, "invalid length"],
     },
     imageUrl: {
       type: String,
       default: 'https://cdn.iconscout.com/icon/free/png-256/free-imageUrl-370-456322.png'
     },
+    position: {
+      type: String, 
+      trim: true
+    }
   },
   {
     timestamps: true,
@@ -72,5 +86,15 @@ userSchema.pre("save", function (next) {
   }
 });
 
+// userSchema.pre("save", async function(next) {
+//   if (!this.isModified("password")) return next();
+//   try {
+//       const hashed = await bcrypt.hash(this.password, ROUNDS);
+//       this.password = hashed;
+//       next();
+//   } catch (error) {
+//       next(error);
+//   }
+// });
 const User = mongoose.model('User', userSchema);
 module.exports = User
