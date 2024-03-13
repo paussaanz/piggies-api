@@ -72,12 +72,43 @@ module.exports.getForms = (req, res, next) => {
   }
 
   Form.find(searchQuery)
-    // .populate('service')
-    .populate('tasks')
+    .populate("service")
+    .populate({
+      path: 'tasks',
+      populate: {
+        path: 'userId serviceId'
+      }
+    })
     .then(dbForms => {
       res.status(StatusCodes.OK).json(dbForms);
     })
     .catch(next)
 }
 
+module.exports.contactClient = (req, res) => {
+  const { message } = req.body;
+  const { id } = req.params;
 
+  Form.findById(id).then(form => {
+    if (!form) {
+      throw new Error('Form not found');
+    }
+
+    const mailOptions = {
+      from: process.env.NODEMAILER_EMAIL,
+      to: form.email,
+      subject: 'We are trying to contact you',
+      html: `<p>${message}</p>`, // Aquí tengo que meter el template de mailing de contacto
+    };
+
+    return transporter.sendMail(mailOptions);
+  })
+  .then(info => {
+    console.log('Email sent: ' + info.response);
+    res.status(200).json({ success: true });
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(500).json({ success: false });
+  });
+};
