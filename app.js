@@ -32,6 +32,11 @@ app.use(logger('dev'));
 const routes = require('./config/routes.config');
 app.use('/', routes);
 
+//Socket-io
+const configureSocket = require('./config/socket.config');
+configureSocket(server);
+
+
 /* Handle errors */
 
 // Middleware para cuando no encuentra ruta
@@ -71,26 +76,58 @@ app.use((error, req, res, next) => {
 });
 
 /*SOCKET IO*/
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-})
-io.on('connection', (socket) => {
-  console.log('A user connected');
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"]
+//   }
+// });
 
-  socket.on('join_room', (data) => {
-    socket.join(data);
-    console.log(`User with id: ${socket.id} joined the room`) // Broadcasts the message to all users
-  });
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data)
-  })
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
+// // No necesitamos mantener un mapeo de usuarios a sockets para esta lógica
+// // pero si necesitas autenticación o manejar usuarios individualmente, puedes mantenerlo
+
+// io.on('connection', (socket) => {
+//   console.log('A user connected', socket.id);
+
+//   // Autenticación del usuario y asociación con el socket
+//   socket.on('authenticate', (token) => {
+//     const user = getUserFromToken(token);
+//     if (user) {
+//       console.log(`Authenticated user ${user.username} with ID ${socket.id}`);
+//       // Asociar el nombre de usuario con este socket para uso futuro si es necesario
+//       socket.username = user.username;
+//     } else {
+//       console.log('Authentication failed, disconnecting socket');
+//       socket.disconnect();
+//     }
+//   });
+
+//   // Unirse a un chat room
+//   socket.on('join_chat', (room) => {
+//     socket.join(room);
+//     console.log(`User ${socket.username} joined chat ${room}`);
+//   });
+
+//   // Enviar y recibir mensajes en el room
+//   socket.on('send_message', (message) => {
+//     // Reenviar el mensaje a todos en el room, incluido el remitente
+//     io.in(message.room).emit('receive_message', message);
+//     console.log(`Message sent in room ${message.room} by ${message.from}`);
+//   });
+
+//   socket.on('disconnect', () => {
+//     console.log(`User disconnected ${socket.id}`);
+//   });
+// });
+
+// function getUserFromToken(token) {
+//   // Implementa tu lógica de autenticación aquí
+//   if (token === "valid-token") {
+//     return { username: "john_doe" };
+//   }
+//   return null;
+// }
+
 
 // Arranque del servidor
 

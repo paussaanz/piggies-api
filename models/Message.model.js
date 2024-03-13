@@ -5,17 +5,17 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  senderId: {
-    type: mongoose.Schema.Types.ObjectId,
+  from: {
+    type: String,
     required: true,
     ref: 'User',
   },
-  receiverId: {
-    type: mongoose.Schema.Types.ObjectId,
+  to: {
+    type: String,
     required: true,
     ref: 'User',
   },
-  roomId: {
+  room: {
     type: String,
     required: true,
   },
@@ -28,3 +28,16 @@ const messageSchema = new mongoose.Schema({
 const Message = mongoose.model('Message', messageSchema);
 
 module.exports = Message;
+
+
+//   room: String,
+//   content: String,
+//   from: String,
+//   to: String,
+//   createdAt: { type: Date, default: Date.now }
+// });
+
+// const Message = mongoose.model('Message', messageSchema);
+
+// module.exports = Message;
+
