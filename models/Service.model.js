@@ -29,8 +29,20 @@ const serviceSchema = new mongoose.Schema({
         trim: true,
         lowercase: true
       },
+  }, {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   });
   
+  serviceSchema.virtual('tasks', {
+    ref: 'Task',
+    foreignField: 'serviceId',
+    localField: '_id',
+    justOne: false
+  })
+
   const Service = mongoose.model('Service', serviceSchema);
   module.exports = Service;
 
