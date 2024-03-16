@@ -2,7 +2,7 @@ const Task = require("../models/Task.model");
 const User = require("../models/User.model");
 const {
     transporter,
-    createEmailTemplate,
+    updatedTaskEmailTemplate,
 } = require('../config/nodemailer.config');
 
 module.exports.getAllTasks = async (req, res, next) => {
@@ -58,12 +58,11 @@ exports.updateTaskStatus = async (req, res, next) => {
         console.log('task', task)
 
          task.userId.forEach((user) => {
-            console.log("Entro")
             transporter.sendMail({
                 from: process.env.NODEMAILER_EMAIL,
                 to: user.email,
                 subject: `Your task ${task.name} was updated`,
-                html: createEmailTemplate({ name: 'Paula', message : 'sosa' }),
+                html: updatedTaskEmailTemplate(task),
             })
                 .then(info => {
                     console.log('Email sent: ' + info.response);

@@ -4,8 +4,10 @@ const { StatusCodes } = require('http-status-codes');
 const createError = require('http-errors');
 const {
   transporter,
-  createEmailTemplate,
+  createdFormEmailTemplate,
+  contactClientEmailTemplate
 } = require('../config/nodemailer.config');
+const moment = require('moment');
 
 module.exports.createForm = (req, res, next) => {
   Form.create(req.body)
@@ -14,7 +16,7 @@ module.exports.createForm = (req, res, next) => {
         from: process.env.NODEMAILER_EMAIL,
         to: req.body.email,
         subject: 'Your form was created succesfully!',
-        html: createEmailTemplate(createdForm),
+        html: createdFormEmailTemplate(createdForm),
       })
         .then(info => {
           console.log('Email sent: ' + info.response);
@@ -42,8 +44,17 @@ module.exports.createForm = (req, res, next) => {
 module.exports.doAcceptForm = (req, res, next) => {
   const { id } = req.params;
   Form.findByIdAndUpdate(id, { accepted: true }, { new: true })
-    .then(updatedForm => {
-      res.json(updatedForm);
+    .then(acceptedForm => {
+      res.json(acceptedForm);
+    })
+    .catch(next);
+};
+
+module.exports.doCompleteForm = (req, res, next) => {
+  const { id } = req.params;
+  Form.findByIdAndUpdate(id, { completed: true }, { new: true })
+    .then(completedForm => {
+      res.json(completedForm);
     })
     .catch(next);
 };
@@ -82,6 +93,7 @@ module.exports.getForms = (req, res, next) => {
     .then(dbForms => {
       res.status(StatusCodes.OK).json(dbForms);
     })
+    
     .catch(next)
 }
 
@@ -98,9 +110,8 @@ module.exports.contactClient = (req, res) => {
       from: process.env.NODEMAILER_EMAIL,
       to: form.email,
       subject: 'We are trying to contact you',
-      html: `<p>${message}</p>`, // Aquí tengo que meter el template de mailing de contacto
+      html: contactClientEmailTemplate(message, form), // Aquí tengo que meter el template de mailing de contacto
     };
-
     return transporter.sendMail(mailOptions);
   })
   .then(info => {
