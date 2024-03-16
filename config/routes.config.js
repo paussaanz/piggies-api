@@ -16,14 +16,15 @@ router.get("/users/me", authMiddleware.isAuthenticated, usersController.getCurre
 router.get( "/users", usersController.getUsers);
 router.get("/users/:id", authMiddleware.isAuthenticated, usersController.getUser);
 router.post("/register", upload.single("imageUrl"), usersController.createUser);
-router.post("/edit/:id", upload.single("imageUrl"), usersController.updateUser);
-
+router.post("/edit/:id", usersController.updateUser);
+router.post("/editProfilePic/:id", upload.single("imageUrl"), usersController.updateProfilePic);
 
 // Form
 router.get('/forms/:id/tasks', formController.acceptedFormsTasks)
 router.get("/forms", formController.getForms);
 router.post("/forms", formController.createForm);
 router.post("/forms/:id/accept", formController.doAcceptForm);
+router.post("/forms/:id/complete", formController.doCompleteForm);
 router.post("/forms/contact/:id", formController.contactClient);
 
 // Tasks

@@ -75,6 +75,32 @@ module.exports.updateUser = (req, res, next) => {
   }
 };
 
+module.exports.updateProfilePic = (req, res, next) => {
+  const { id } = req.params;
+  const userToUpdate = {
+    ...req.body,
+  }
+
+  if (req.file) {
+    userToUpdate.imageUrl = req.file.path;
+  }
+  
+    User.findByIdAndUpdate(id, userToUpdate, { new: true })
+    .populate('tasks')
+      .then(updatedUser => {
+        if (!updatedUser) {
+          return res.status(404).send({ message: 'User not found.' });
+        }
+        res.json(updatedUser);
+      })
+      .catch(error => {
+        console.error('Error updating user profile:', error);
+
+        res.status(500).send({ message: 'Error updating user profile.' });
+
+      })
+  };
+
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
