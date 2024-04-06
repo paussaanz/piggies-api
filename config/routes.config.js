@@ -5,6 +5,7 @@ const tasksController = require("../controllers/tasks.controller");
 const authController = require("../controllers/auth.controller");
 const formController = require("../controllers/form.controller");
 const messageController = require("../controllers/message.controller");
+const notificationController = require("../controllers/notification.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const upload = require("./storage.config");
 
@@ -40,5 +41,10 @@ router.get("/services", serviceController.getServices);
 
 // Messages
 router.get("/messages/:room", messageController.getMessageHistory)
+router.post("/uploadImage", upload.single("imageUrl"), messageController.uploadImage)
+
+//Notifications
+router.post("/notifications/create", notificationController.createNotifications)
+router.get("/notifications/:userId", notificationController.getNotifications)
 
 module.exports = router;

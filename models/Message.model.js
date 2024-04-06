@@ -19,6 +19,11 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  type: { 
+    type: String,
+    required: true,
+    default: 'text',
+  },
   timestamp: {
     type: Date,
     default: Date.now,
@@ -28,16 +33,3 @@ const messageSchema = new mongoose.Schema({
 const Message = mongoose.model('Message', messageSchema);
 
 module.exports = Message;
-
-
-//   room: String,
-//   content: String,
-//   from: String,
-//   to: String,
-//   createdAt: { type: Date, default: Date.now }
-// });
-
-// const Message = mongoose.model('Message', messageSchema);
-
-// module.exports = Message;
-

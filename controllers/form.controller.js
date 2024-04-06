@@ -7,7 +7,6 @@ const {
   createdFormEmailTemplate,
   contactClientEmailTemplate
 } = require('../config/nodemailer.config');
-const moment = require('moment');
 
 module.exports.createForm = (req, res, next) => {
   Form.create(req.body)
