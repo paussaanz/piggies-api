@@ -46,5 +46,6 @@ router.post("/uploadImage", upload.single("imageUrl"), messageController.uploadI
 //Notifications
 router.post("/notifications/create", notificationController.createNotifications)
 router.get("/notifications/:userId", notificationController.getNotifications)
+router.post("/notifications/markAsRead/:userId", notificationController.markNotificationsAsRead)
 
 module.exports = router;
