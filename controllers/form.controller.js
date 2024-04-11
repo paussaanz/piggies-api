@@ -51,7 +51,12 @@ module.exports.doAcceptForm = (req, res, next) => {
 
 module.exports.doCompleteForm = (req, res, next) => {
   const { id } = req.params;
+
   Form.findByIdAndUpdate(id, { completed: true }, { new: true })
+    .then(completedForm => {
+      return Task.updateMany({ formId: id }, { status: true })
+        .then(() => completedForm); 
+    })
     .then(completedForm => {
       res.json(completedForm);
     })
@@ -92,7 +97,7 @@ module.exports.getForms = (req, res, next) => {
     .then(dbForms => {
       res.status(StatusCodes.OK).json(dbForms);
     })
-    
+
     .catch(next)
 }
 
@@ -113,12 +118,12 @@ module.exports.contactClient = (req, res) => {
     };
     return transporter.sendMail(mailOptions);
   })
-  .then(info => {
-    console.log('Email sent: ' + info.response);
-    res.status(200).json({ success: true });
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(500).json({ success: false });
-  });
+    .then(info => {
+      console.log('Email sent: ' + info.response);
+      res.status(200).json({ success: true });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ success: false });
+    });
 };
