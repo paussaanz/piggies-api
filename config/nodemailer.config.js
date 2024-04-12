@@ -57,8 +57,8 @@ module.exports.createdFormEmailTemplate = (form) => {
             <p>Hey there, ${form.name}</p>
             <p>We're thrilled to let you know we've received your request and our team is on it. We're cooking up something special just for you and will get back to you as soon as possible.</p>
             <p>In the meantime, here's a recap of what you sent us:</p>
+            <p><strong>Subject:</strong> <span class="highlight">${form.subject}</span></p>
             <p><strong>Message:</strong> <span class="highlight">${form.message}</span></p>
-            <p><strong>Request Info:</strong> <span class="highlight">${form.message}</span></p>
             <p>We appreciate your patience and excitement. Stay tuned!</p>
         </div>
         <div class="footer">
