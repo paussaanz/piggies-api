@@ -43,6 +43,12 @@ const formSchema = new mongoose.Schema({
     required: true,
     default: false
   },
+  rejected:
+  {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   completed:
   {
     type: Boolean,

@@ -25,6 +25,7 @@ router.get('/forms/:id/tasks', formController.acceptedFormsTasks)
 router.get("/forms", formController.getForms);
 router.post("/forms", formController.createForm);
 router.post("/forms/:id/accept", formController.doAcceptForm);
+router.post("/forms/:id/reject", formController.doRejectForm);
 router.post("/forms/:id/complete", formController.doCompleteForm);
 router.post("/forms/contact/:id", formController.contactClient);
 

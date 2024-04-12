@@ -49,6 +49,15 @@ module.exports.doAcceptForm = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.doRejectForm = (req, res, next) => {
+  const { id } = req.params;
+  Form.findByIdAndUpdate(id, { rejected: true }, { new: true })
+    .then(rejectedForm => {
+      res.json(rejectedForm);
+    })
+    .catch(next);
+};
+
 module.exports.doCompleteForm = (req, res, next) => {
   const { id } = req.params;
 
