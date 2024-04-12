@@ -78,15 +78,15 @@ module.exports.createNotifications = async (req, res) => {
 
       switch(action) {
         case 'add':
-          message = "Has sido añadido a la tarea.";
+          message = "You have been added to a new task.";
           break;
         case 'remove':
-          message = "Has sido eliminado de la tarea.";
+          message = "You have been deleted from a task.";
           break;
         case 'statusChange':
 
-        const statusMessage = status ? 'completada' : 'pendiente';
-          message = `La tarea ha sido marcada como ${statusMessage}.`;
+        const statusMessage = status ? 'done' : 'pending';
+          message = `A task you were working on has been marked as ${statusMessage}.`;
           break;
         default:
           throw new Error('Acción no válida');
